@@ -1,5 +1,3 @@
-gaussNewton/build/
-gaussNewton/CMakeFiles/
-*.txt
 .vscode/
 build/
+*.txt
