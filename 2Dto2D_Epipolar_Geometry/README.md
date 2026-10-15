@@ -2,9 +2,25 @@
 
 https://chatgpt.com/s/t_6acf5cdc39488191979614f409346477
 
+
+三角测量：估计地图点的深度（立体像对前方交会）
+
+https://chatgpt.com/s/t_6ad06af603b08191a14d6c849c6058ef
+
 K=[520.9, 0, 325.1; 0, 521.0, 249.7; 0, 0, 1];
 相机光心 (325.1,249.7)
 相机焦距 521
+
+
+在位姿估计后，程序会对通过正深度检验的内点调用 OpenCV
+`triangulatePoints` 进行三角测量，并按深度着色保存两幅图上的特征点：
+
+- `build/depth_image_1.png`：图像1相机坐标系下的深度。
+- `build/depth_image_2.png`：图像2相机坐标系下的深度。
+
+深度图下方包含 Turbo 渐变色标、近/远深度数值、中间值和有效点数量；同一对图像使用统一色标范围，便于对照。
+由于两幅图像只能恢复相对平移方向，深度仅具有相对尺度，不是米制距离。
+
 
 ```
 (base) zyh@zyh:~/code/zyh_slam$ /home/zyh/code/zyh_slam/2Dto2D_Epipolar_Geometry/build/epipolar_geometry
@@ -38,6 +54,10 @@ RANSAC 内点数量： 349/490
  -0.004722128606185643;
  0.4232372264360192]
 
-运行耗时：ORB 特征提取 = 41.4621 毫秒，特征匹配 = 6.05112 毫秒，对极几何估计 = 9.41211 毫秒
-内点匹配可视化结果已保存到： /home/zyh/code/zyh_slam/2Dto2D_Epipolar_Geometry/build/inlier_matches.png
+运行耗时：ORB 特征提取 = 44.81 毫秒，特征匹配 = 6.87326 毫秒，对极几何估计 = 9.37891 毫秒，三角测量与绘图 = 32.0855 毫秒
+有效三角化点数量： 349/349
+绘图颜色对应深度范围（两相机坐标系合并）： 6.76442 ~ 35.4125（相对尺度，非实际米制距离）
+内点匹配可视化结果已保存到： /home/zyh/code/zyh_slam/2Dto2D_Epipolar_Geometry/build/good_matches.png
+图像1深度可视化结果已保存到： /home/zyh/code/zyh_slam/2Dto2D_Epipolar_Geometry/build/depth_image_1.png
+图像2深度可视化结果已保存到： /home/zyh/code/zyh_slam/2Dto2D_Epipolar_Geometry/build/depth_image_2.png
 ```
